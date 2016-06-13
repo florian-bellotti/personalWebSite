@@ -1,0 +1,15 @@
+{
+  "name": "collection",
+  "version": "0.1.0",
+  "dependencies": {
+    "angular": "^1.5.6",
+    "body-parser": "~1.10.1",
+    "express": "~4.11.0",
+    "fs": "0.0.2",
+    "jade": "*",
+    "mongoose": "^4.4.20",
+    "multer": "^1.1.0"
+  },
+  "author": "Florian <florian.bellotti@viacesi.fr>",
+  "description": "Allow to set and get all my music collection"
+}

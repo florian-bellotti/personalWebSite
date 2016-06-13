@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+<html ng-app="collectionApp">
+<head>
+    <meta charset="utf-8">   
+    <link href="/public/bootstrap.css" rel="stylesheet">
+    <link href="/public/collection.css" rel="stylesheet">
+    <script src="/node_modules/angular/angular.js"></script>
+    <script type="text/javascript">
+        var collectionApp = angular.module("collectionApp", [])
+        .filter("category", function () {
+		    return function (items, category) {
+                var filtered = [];
+                if (items != null) {
+                    for (var i = 0; i < items.length; i++) {
+                        if (items[i].categorie == category){
+                            filtered.push(items[i]);
+                        }
+                    }
+                }
+                return filtered;
+		    }
+		});
+
+        collectionApp.controller("CollectionCtrl", function ($scope, $http) {
+        	$scope.data = {};
+            $http({
+			  	method: 'GET',
+			  	url: '/collection/list'
+			}).then(function successCallback(response) {
+			    $scope.data.albums = response.data.albums;
+			    console.log(response.data.albums);
+			}, function errorCallback(response) {
+			    $scope.data.error = response;
+			});
+		});
+    </script>
+    <title>Ma collection</title>
+</head>
+<body ng-controller="CollectionCtrl">
+    <header>
+        <div class="header-wrapper site-title">
+            <div id="nav">
+                <nav class="main-nav dropdown-click" id="main-navigation">
+                    <ul>
+                        <li><a href="/">....</a></li>
+                        <li><a href="/">Ma collection</a></li>
+                        <li><a href="/">Mon IP</a></li>
+                        <li><a href="/">....</a></li>
+                        <li><a href="/">....</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div id="title">
+        <h1>Ma collection</h1>
+
+        <form id="searchMusic" class="form-inline">
+            <div class="form-group">
+                <input type="text" class="form-control" id="searchMusic" placeholder="Titre, Artiste.." ng-model="searchMusic">
+            </div>
+        </form>
+    </div>
+    <section>
+        <h2>Ajouter album</h2>
+
+        <form enctype="multipart/form-data" class="form-horizontal" action="/collection/add" method="post">
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="artiste">Artiste</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="artiste" id="artiste">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="album">Album</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="album" id="album">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="album">Categorie</label>
+                <div class="col-sm-10">
+                    <select name="category" class="form-control">
+                        <option>vinyle</option>
+                        <option>cd</option>
+                        <option>flac</option>
+                    </select>
+                </div>
+                <!-- <div class="col-sm-8"></div> -->
+            </div>
+            <divclass="form-group">
+                <!-- <label class="control-label col-sm-2" for="album">Image</label> -->
+                <div class="control-label col-sm-10">
+                    <input type="file" name="image">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-default">Ajouter</button>
+        </form>
+    </section>
+
+    <section>
+        <h2>Vinyle</h2>
+
+        <div class="grid">
+            <div class="grid-sizer col-xs-6 col-sm-4 col-md-4 col-lg-3 col-xl-2"></div>
+        	<div class="grid-item col-xs-6 col-sm-4 col-md-4 col-lg-3 col-xl-2" ng-repeat="album in data.albums | orderBy:'Artiste' | filter : searchMusic | category:'vinyle'">
+        		<div class="grid-item-content">
+                	<img src="/public/images/{{ album.imagePath }}" />
+                    <h3>{{ album.artiste }}</h3>
+                    <h4>{{ album.album }}</h4>
+                    <div class="text-center">
+                        <button class="btn btn-danger"><a href="/collection/remove/?id={{ album._id }}">Supprimer</a></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>CD</h2>
+        <div class="grid">
+            <div class="grid-sizer col-xs-6 col-sm-4 col-md-4 col-lg-3 col-xl-2"></div>
+        	<div class="grid-item col-xs-6 col-sm-4 col-md-4 col-lg-3 col-xl-2" ng-repeat="album in data.albums | orderBy:'Artiste' | filter : searchMusic | category:'cd'">
+        		<div class="grid-item-content">
+                	<img src="/public/images/{{ album.imagePath }}" />
+                    <h3>{{ album.artiste }}</h3>
+                    <h4>{{ album.album }}</h4>
+                    <div class="text-center">
+                        <button class="btn btn-danger"><a href="/collection/remove/?id={{ album._id }}">Supprimer</a></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Flac</h2>
+        <div class="grid">
+            <div class="grid-sizer col-xs-6 col-sm-4 col-md-4 col-lg-3 col-xl-2"></div>
+            <div class="grid-item col-xs-6 col-sm-4 col-md-4 col-lg-3 col-xl-2" ng-repeat="album in data.albums | orderBy:'Artiste' | filter : searchMusic | category:'flac'">
+        		<div class="grid-item-content">
+                	<img src="/public/images/{{ album.imagePath }}" />
+                    <h3>{{ album.artiste }}</h3>
+                    <h4>{{ album.album }}</h4>
+                    <div class="text-center">
+                        <button class="btn btn-danger"><a href="/collection/remove/?id={{ album._id }}">Supprimer</a></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="/public/jquery-2.1.1.min.js"></script>
+    <script src="/public/masonry.min.js"></script>
+    <script type="text/javascript">     
+        setTimeout(function(){     
+            var $grid = $('.grid').masonry({
+                itemSelector: '.grid-item', 
+                columnWidth: '.grid-sizer',
+                percentPosition: true
+            }); 
+        }, 500);
+    </script>
+</body>
+</html>
