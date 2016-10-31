@@ -56,7 +56,7 @@ body {
     overflow-x: hidden;
 }
 
-section {
+section, .section {
     background-color: #fff;  
     padding: 20px;
     margin-bottom: 30px;
@@ -93,7 +93,7 @@ header {
     margin-bottom: 30px;
 }
 
-#searchMusic {
+#searchMusic, #searchFilm {
     margin-left: 20px;
 }
 

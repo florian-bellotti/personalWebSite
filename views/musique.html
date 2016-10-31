@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html ng-app="musiqueApp">
+<head>
+    <meta charset="utf-8">   
+    <link href="/public/css/bootstrap.css" rel="stylesheet">
+    <link href="/public/css/collection.css" rel="stylesheet">
+    <script src="/node_modules/angular/angular.js"></script>
+    <script src="/public/js/jquery-2.1.1.min.js"></script>
+    <script src="/public/js/musiqueapp.js"></script>
+    <title>Ma musique</title>
+</head>
+<body ng-controller="MusiqueCtrl">
+    <nav id="mobile-navigation">
+        <div id="mobile-navigation-label">Menu</div>
+        <ul>
+            <li><a href="/musique">Ma musique</a></li>
+            <li><a href="/film">Mes films</a></li>
+        </ul>
+    </nav>
+    
+    <header>
+        <div class="header-wrapper site-title">
+            <div id="nav">
+                <nav class="main-nav dropdown-click" id="main-navigation">
+                    <ul>
+                        <li><a href="/musique">Ma musique</a></li>
+                        <li><a href="/film">Mes films</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div id="title">
+        <h1>Ma collection</h1>
+        <form id="searchMusic" class="form-inline">
+            <div class="form-group">
+                <input type="text" class="form-control" id="searchMusic" placeholder="Titre, Artiste.." ng-model="searchMusic">
+            </div>
+        </form>
+    </div>
+
+    <section class="row section">
+        <h2>Vinyle</h2>
+
+        <div class="grid-item col-xs-6 col-sm-4 col-md-4 col-lg-3 col-xl-2" ng-repeat="album in data.albums | orderBy:'Artiste' | filter : searchMusic | category:'vinyle'" on-finish-render="ngRepeatFinished">
+            <div class="grid-item-content">
+                <img src="/public/images/{{ album.imagePath }}" />
+                <h3>{{ album.artiste }}</h3>
+                <h4>{{ album.album }}</h4>
+            </div>
+        </div>
+    </section>
+
+    <section class="row section">
+        <h2>CD</h2>
+
+        <div class="grid-item col-xs-6 col-sm-4 col-md-4 col-lg-3 col-xl-2" ng-repeat="album in data.albums | orderBy:'Artiste' | filter : searchMusic | category:'cd'" on-finish-render="ngRepeatFinished">
+            <div class="grid-item-content">
+                <img src="/public/images/{{ album.imagePath }}" />
+                <h3>{{ album.artiste }}</h3>
+                <h4>{{ album.album }}</h4>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

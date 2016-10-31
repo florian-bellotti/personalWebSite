@@ -1,16 +1,18 @@
 var express = require('express'),
 	app = express(),
-	collection = require('./controllers/collectionapi');
+	musique = require('./controllers/musiqueapi'),
+	film = require('./controllers/filmapi');
 
 app.use('/public', express.static(__dirname + '/public'))
 .use('/node_modules', express.static(__dirname + '/node_modules'))
 .set('view engine', 'jade')
 
-.use('/collection', collection)
+.use('/musique', musique)
+.use('/film', film)
 
 
 .use(function(req, res, next){
-    res.redirect('/collection');
+    res.redirect('/musique');
 })
 
 .listen(8080, function () {

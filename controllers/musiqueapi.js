@@ -1,26 +1,26 @@
 var express = require('express'),
     router = express.Router(),
     db = require('./../models/db'),
-    collectiondata = require('./../models/collection'),
+    albumdata = require('./../models/album'),
     bodyParser = require('body-parser'),
     urlencodedParser = bodyParser.urlencoded({ extended: false }),
     multer  = require('multer'),
     upload = multer({ dest: 'public/images/' }),
     fs = require("fs");
 
-// return the album view  
+// return the musique view  
 function getAlbumView(req, res){
-    res.status(200).render('collection');
+    res.status(200).render('musique');
 }
 
 // return the album admin view
 function getAlbumAdminView(req, res){
-    res.status(200).render('collectionadmin');
+    res.status(200).render('musiqueadmin');
 }
 
 // return all ablums 
 function getAllAlbum(req, res){
-    collectiondata.albumlist(function(err, albumlist) {
+    albumdata.albumlist(function(err, albumlist) {
         if (err) {
             console.log(err);
         } else {
@@ -32,7 +32,7 @@ function getAllAlbum(req, res){
 // add an album to the database
 function addAlbum(req, res){
     if (req.body.artiste != undefined && req.body.album != undefined) {
-        collectiondata.addalbum(req.body.artiste, req.body.album, req.body.category, req.file.filename, function(err, albumlist) {        
+        albumdata.addalbum(req.body.artiste, req.body.album, req.body.category, req.file.filename, function(err, albumlist) {        
             if (err) {
                 console.log(err);
             } else {
@@ -49,7 +49,7 @@ function removeAlbum(req, res){
     var id = req.param('id');
 
     // get all information from this album
-    collectiondata.albumbyid(id, function(err, album) {
+    albumdata.albumbyid(id, function(err, album) {
         if (err) {
             console.log(err);
         } else {
@@ -63,7 +63,7 @@ function removeAlbum(req, res){
             });
 
             // remove from the database
-            collectiondata.removealbum(id, function(err, albumlist) {        
+            albumdata.removealbum(id, function(err, albumlist) {        
                 if (err) {
                     console.log(err);
                 } else {
@@ -71,7 +71,7 @@ function removeAlbum(req, res){
                 }
             });
         }
-        res.redirect('/collection/admin');
+        res.redirect('/musique/admin');
     });
 }
 

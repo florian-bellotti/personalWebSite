@@ -1,15 +1,21 @@
 var mongoose = require('mongoose');
 
 // define the mongo shema
-var schema = new mongoose.Schema({ 
+var albumSchema = new mongoose.Schema({ 
     artiste: String, 
     album: String, 
     categorie: String,
     imagePath: String
 });
 
-// define the collection to use 
-var collection = mongoose.model('collection', schema);
+var filmSchema = new mongoose.Schema({ 
+    titre: String, 
+    imagePath: String
+});
+
+// define collections 
+var Album = mongoose.model('collection', albumSchema);
+var Film = mongoose.model('film', filmSchema);
 
 // make the connexion
 mongoose.connect('mongodb://localhost/collection');
